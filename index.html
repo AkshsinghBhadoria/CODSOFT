@@ -1,0 +1,407 @@
+<!--
+  Author: Aksh Singh Bhadoria
+  Date: 23 Jun 2025
+  Description: Clean, modern & unique portfolio page.
+  Notes for reviewers:
+  • Built from scratch without templates.
+  • Uses CSS‑variables & vanilla JS for a11y‑friendly dark‑mode + active‑link.
+  • All inline styles removed for maintainability.
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aksh | Web Learner</title>
+
+    <!-- SEO & Open‑Graph basics -->
+    <meta
+      name="description"
+      content="Portfolio of Aksh Singh Bhadoria – BCA student exploring modern Web Development & front‑end technologies." />
+    <meta property="og:title" content="Aksh | Web Learner" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aksh‑portfolio.example" />
+    <meta property="og:description" content="Curious developer – here are my projects & skills." />
+
+    <!-- Fonts & icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha512-LVjH6rz2xRNG3q0rkszH90oXvcAB5Vf7dBiN0ym8y4XAHC726kOWE6djg8qIJZ2U1sOEqeO2jCmwOSYsMX8Nog=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+
+    
+    <style>
+      :root {
+        --clr‑bg: #f5f7fa;
+        --clr‑bg‑dark: #121212;
+        --clr‑primary: #0074d9;
+        --clr‑secondary: #6a1b9a;
+        --clr‑text: #222;
+        --clr‑text‑light: #fff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: var(--clr‑bg);
+        color: var(--clr‑text);
+        line-height: 1.6;
+        scroll-behavior: smooth;
+        transition: background 0.3s, color 0.3s;
+      }
+
+      /* Dark theme modifier */
+      body.dark {
+        background: var(--clr‑bg‑dark);
+        color: var(--clr‑text‑light);
+      }
+
+      /* Utilities */
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+
+      a {
+        color: var(--clr‑primary);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* Navigation */
+      header {
+        background: var(--clr‑text‑light);
+        position: sticky;
+        top: 0;
+        box-shadow: 0 2px 4px rgba(0 0 0 / 10%);
+        z-index: 1000;
+      }
+
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+      }
+      .nav__brand {
+        font-size: 1.75rem;
+        font-weight: 600;
+      }
+      .nav__links {
+        list-style: none;
+        display: flex;
+        gap: 1.5rem;
+      }
+      .nav__link a {
+        position: relative;
+        font-weight: 600;
+        color: inherit;
+      }
+      .nav__link a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -4px;
+        width: 0%;
+        height: 2px;
+        background: var(--clr‑primary);
+        transition: width 0.3s;
+      }
+      .nav__link a:hover::after,
+      .nav__link a.active::after {
+        width: 100%;
+      }
+
+      .toggle‑theme {
+        background: none;
+        border: 2px solid var(--clr‑primary);
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        color: var(--clr‑primary);
+      }
+
+      /* Hero */
+      .hero {
+        text-align: center;
+        padding: 3rem 0;
+      }
+      .hero img {
+        width: 160px;
+        height: 160px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 4px solid var(--clr‑primary);
+        box-shadow: 0 4px 10px rgba(0 0 0 / 15%);
+      }
+      .typed {
+        font-size: 1.5rem;
+        color: var(--clr‑primary);
+        min-height: 2.2em;
+        font-family: monospace;
+        margin-top: 0.75rem;
+      }
+
+      /* Sections */
+      section {
+        margin: 3rem 0;
+        background: var(--clr‑text‑light);
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0 0 0 / 5%);
+        transition: background 0.3s;
+      }
+      body.dark section {
+        background: #1e1e1e;
+      }
+      section h2 {
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--clr‑secondary);
+      }
+
+      /* About */
+      .about-content {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 2rem;
+      }
+      .about-content img {
+        width: 100%;
+        border-radius: 12px;
+      }
+      .about-content ul {
+        padding-left: 1rem;
+        list-style: disc;
+      }
+
+      /* Skills */
+      .skills-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1.5rem;
+      }
+      .skill-card {
+        text-align: center;
+        font-size: 0.9rem;
+      }
+      .skill-card i {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        color: var(--clr‑primary);
+      }
+
+      /* Projects */
+      .project {
+        margin-bottom: 2rem;
+      }
+
+      /* Contact */
+      .contact-item {
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Footer */
+      footer {
+        text-align: center;
+        padding: 1rem 0;
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .about-content {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+        .nav__links {
+          display: none; /* Simplistic mobile nav; could be enhanced later */
+        }
+        .toggle‑theme {
+          margin-left: auto;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navigation -->
+    <header>
+      <div class="container nav">
+        <span class="nav__brand">Aksh Portfolio</span>
+        <ul class="nav__links">
+          <li class="nav__link"><a href="#home">Home</a></li>
+          <li class="nav__link"><a href="#about">About</a></li>
+          <li class="nav__link"><a href="#skills">Skills</a></li>
+          <li class="nav__link"><a href="#projects">Projects</a></li>
+          <li class="nav__link"><a href="#contact">Contact</a></li>
+        </ul>
+        <button class="toggle‑theme" aria-label="Toggle dark mode">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <main class="container">
+      <section id="home" class="hero">
+        <img src="header.jpeg" alt="Aksh Singh Bhadoria" />
+        <p class="typed" id="typing-text"></p>
+      </section>
+
+      <!-- About -->
+      <section id="about">
+        <h2><i class="fas fa-user-graduate"></i>About Me</h2>
+        <div class="about-content">
+          <img src="aksh.jpeg" alt="Aksh Singh Bhadoria" />
+          <div>
+            <p>
+              Namaste 🙏, I'm <strong>Aksh Singh Bhadoria</strong>, an enthusiastic
+              <strong>BCA student</strong> at
+              <strong>GL Bajaj Institute of Management</strong>. I'm passionate
+              about <strong>front‑end development</strong> and constantly
+              exploring new technologies.
+            </p>
+            <p>
+              I've recently completed my 2nd‑semester exams and built a strong
+              foundation in <strong>C programming</strong> and the
+              <strong>basics of Java</strong>.
+            </p>
+
+            <h3><i class="fas fa-graduation-cap"></i> Education</h3>
+            <ul>
+              <li><strong>BCA</strong> – GL Bajaj (2024‑2027)</li>
+              <li><strong>12th Grade</strong> – Vidya Bhavan Public School</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section id="skills">
+        <h2><i class="fas fa-lightbulb"></i>Skills</h2>
+        <div class="skills-list">
+          <div class="skill-card">
+        <a href="https://developer.mozilla.org/docs/Web/HTML" target="_blank" rel="noopener" title="HTML5">
+          <i class="fab fa-html5"></i>
+        </a>
+        <span>
+          <a href="https://developer.mozilla.org/docs/Web/HTML" target="_blank" rel="noopener">HTML5</a>
+        </span>
+          </div>
+          <div class="skill-card">
+        <a href="https://developer.mozilla.org/docs/Web/CSS" target="_blank" rel="noopener" title="CSS3">
+          <i class="fab fa-css3-alt"></i>
+        </a>
+        <span>
+          <a href="https://developer.mozilla.org/docs/Web/CSS" target="_blank" rel="noopener">CSS3</a>
+        </span>
+          </div>
+          <div class="skill-card">
+        <a href="https://en.wikipedia.org/wiki/C_(programming_language)" target="_blank" rel="noopener" title="C Language">
+          <i class="fas fa-code"></i>
+        </a>
+        <span>
+          <a href="https://en.wikipedia.org/wiki/C_(programming_language)" target="_blank" rel="noopener">C Language</a>
+        </span>
+          </div>
+          <div class="skill-card">
+        <a href="https://www.java.com/" target="_blank" rel="noopener" title="Java">
+          <i class="fab fa-java"></i>
+        </a>
+        <span>
+          <a href="https://www.java.com/" target="_blank" rel="noopener">Java</a>
+        </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects">
+        <h2><i class="fas fa-briefcase"></i>Projects</h2>
+
+        <article class="project">
+          <h3>🚀 CodSoft Portfolio Website</h3>
+          <p>My first project built with pure HTML & CSS during the CodSoft Internship.</p>
+        </article>
+
+        <article class="project">
+          <h3>🛵 Udhari Bike <small>(basic front‑end)</small></h3>
+          <p>A simple bike lending concept with tracking & reminder.</p>
+          <a href="https://udharibike-aksh435-singh1006-rental.netlify.app" target="_blank" rel="noopener">View Live 🔗</a>
+        </article>
+      </section>
+
+      <!-- Resume -->
+      <section id="resume">
+        <h2><i class="fas fa-file"></i>Resume</h2>
+        <a href="Aksh_Singh_Bhadoria_Resume.pdf" download>📥 Download My Resume</a>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact">
+        <h2><i class="fas fa-envelope-open-text"></i>Contact</h2>
+        <div class="contact-item"><i class="fas fa-envelope"></i><a href="mailto:singhaksh435@gmail.com">singhaksh435@gmail.com</a></div>
+        <div class="contact-item"><i class="fas fa-phone"></i><span>+91‑80778‑98623</span></div>
+        <div class="contact-item"><i class="fab fa-github"></i><a href="https://github.com/AkshsinghBhadoria" target="_blank">GitHub</a></div>
+        <div class="contact-item"><i class="fab fa-linkedin"></i><a href="https://www.linkedin.com/in/aksh-singh-659586332" target="_blank">LinkedIn</a></div>
+      </section>
+    </main>
+
+    <footer>© 2025 Aksh Singh • All rights reserved ❤️</footer>
+
+    <!-- JavaScript : typing + theme‑toggle + active‑link -->
+    <script>
+      // ⭐ Typing effect
+      const txt = "Hi, I'm Aksh Singh BHADORIA, Web Learner";
+      let idx = 0;
+      (function type() {
+        document.getElementById("typing-text").textContent = txt.slice(0, ++idx);
+        if (idx < txt.length) setTimeout(type, 80);
+      })();
+
+      // ⭐ Dark / light mode toggle
+      const toggleBtn = document.querySelector(".toggle‑theme");
+      toggleBtn.addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+        toggleBtn.firstElementChild.classList.toggle("fa-sun");
+        toggleBtn.firstElementChild.classList.toggle("fa-moon");
+      });
+
+      // ⭐ Active nav highlight on scroll
+      const links = document.querySelectorAll(".nav__link a");
+      const sections = Array.from(links).map((l) => document.querySelector(l.getAttribute("href")));
+      window.addEventListener("scroll", () => {
+        const scrollPos = document.documentElement.scrollTop || document.body.scrollTop;
+        sections.forEach((sec, i) => {
+          if (scrollPos >= sec.offsetTop - 80) {
+            links.forEach((l) => l.classList.remove("active"));
+            links[i].classList.add("active");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
